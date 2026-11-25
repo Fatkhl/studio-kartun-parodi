@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Studio Kartun Parodi — Kantor 3D</title>
+<meta name="description" content="Kantor Studio Kartun Parodi: 5 karyawan AI bikin film kartun pendek bahasa Indonesia, parodi hal viral.">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js",
+    "three/addons/": "./vendor/addons/",
+    "animejs": "./vendor/anime.esm.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <header id="tape">
+    <div class="tape-left">
+      <span class="logo">STUDIO KARTUN PARODI</span>
+      <span class="tape-sub">Film kartun pendek bahasa Indonesia — parodi hal viral</span>
+    </div>
+    <div class="tape-right">
+      <span class="pill"><i class="dot green"></i> Muse aktif</span>
+      <span class="pill" id="tape-count">0 episode di papan</span>
+      <span class="pill amber">Target: 1 video/hari</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ KANTOR 3D ============ -->
+    <section id="stage-wrap">
+      <div id="stage">
+        <canvas id="c"></canvas>
+        <div id="hud">
+          <div class="hud-big"><span id="h-ep">0</span><small>EPISODE</small></div>
+          <div class="hud-row"><span id="h-today">Hari ini: Trend Scan 06:30</span></div>
+          <div class="hud-row dim" id="h-place">KANTOR — 5 MEJA • PAPAN DI DINDING</div>
+          <div class="hud-bar"><i id="h-barfill"></i></div>
+        </div>
+        <div id="labels"></div>
+        <div id="stage-hint">Seret untuk melihat sekeliling &nbsp;•&nbsp; Klik meja / karakter untuk fokus &amp; buka detail</div>
+        <button id="btn-reset-view" type="button">⟲ Reset tampilan</button>
+      </div>
+      <div class="stage-caption">
+        <span><b>Langit senja permanen</b> di atas kantor — kayak game Think Tank: satu ruangan, lima meja, papan besar di dinding, dan lampu kuningan yang hangat.</span>
+        <span class="dim">Three.js + anime.js • semua library lokal, tanpa CDN</span>
+      </div>
+    </section>
+
+    <!-- ============ PAPAN EPISODE ============ -->
+    <section id="board-sec" class="panel">
+      <div class="sec-head">
+        <h2>📌 Papan Episode</h2>
+        <span class="dim">Klik sticky note untuk detail • pindah tahap pakai tombol ‹ › atau seret ke kolom lain • data tersimpan di browser (localStorage)</span>
+      </div>
+      <form id="idea-form" autocomplete="off">
+        <input id="f-topic" type="text" placeholder="Topik parodi — contoh: Dasco &amp; Golden Oasis" maxlength="80" required>
+        <input id="f-source" type="text" placeholder="Sumber tren — contoh: X trending / TikTok FYP" maxlength="80" required>
+        <input id="f-angle" type="text" placeholder="Angle parodi — contoh: sidang berubah jadi kuis" maxlength="120">
+        <input id="f-why" type="text" placeholder="Kenapa layak dibuat — bukti viralnya" maxlength="140">
+        <button type="submit">+ Tempel ide baru</button>
+      </form>
+      <div id="board">
+        <div class="col" data-stage="ide"><h3>💡 IDE <span class="count" data-count="ide">0</span></h3><div class="col-body" data-col="ide"></div></div>
+        <div class="col" data-stage="naskah"><h3>✍️ NASKAH <span class="count" data-count="naskah">0</span></h3><div class="col-body" data-col="naskah"></div></div>
+        <div class="col" data-stage="suara"><h3>🎙️ SUARA <span class="count" data-count="suara">0</span></h3><div class="col-body" data-col="suara"></div></div>
+        <div class="col" data-stage="edit"><h3>🎬 EDIT <span class="count" data-count="edit">0</span></h3><div class="col-body" data-col="edit"></div></div>
+        <div class="col" data-stage="terbit"><h3>🚀 TERBIT <span class="count" data-count="terbit">0</span></h3><div class="col-body" data-col="terbit"></div></div>
+      </div>
+    </section>
+
+    <!-- ============ KARYAWAN ============ -->
+    <section id="team-sec" class="panel">
+      <div class="sec-head">
+        <h2>👥 5 Karyawan AI</h2>
+        <span class="dim">Klik kartu atau mejanya di kantor 3D untuk lihat job, output, dan antrean tahapnya</span>
+      </div>
+      <div id="team"></div>
+    </section>
+
+    <!-- ============ PIPELINE + ATURAN ============ -->
+    <section id="pipe-sec" class="panel">
+      <div class="sec-head"><h2>🗓️ Pipeline Harian</h2><span class="dim">Siklus 1 hari = 1 video • kalau stabil, naik ke 2 video/hari</span></div>
+      <ol id="pipeline"></ol>
+      <h3 class="sub-h">📏 Aturan Studio</h3>
+      <ul id="rules"></ul>
+      <h3 class="sub-h">🤖 Partner LLM</h3>
+      <div id="partners"></div>
+    </section>
+
+    <!-- ============ MCP ============ -->
+    <section id="mcp-sec" class="panel">
+      <div class="sec-head"><h2>🔌 MCP — Tinggal Colok</h2><span class="dim">Server MCP studio jalan di VM • 7 tools • colok ke Claude, Gemini, atau ML.ai</span></div>
+      <div class="mcp-grid">
+        <div>
+          <h3 class="sub-h">Config (mcp-config.json)</h3>
+          <pre id="mcp-json" class="code"></pre>
+          <button class="copy-btn" data-copy="mcp-json" type="button">📋 Salin config</button>
+        </div>
+        <div>
+          <h3 class="sub-h">Perintah Claude Code</h3>
+          <pre id="mcp-cmd" class="code"></pre>
+          <button class="copy-btn" data-copy="mcp-cmd" type="button">📋 Salin perintah</button>
+          <h3 class="sub-h">7 Tools</h3>
+          <ul id="mcp-tools" class="tools"></ul>
+          <p class="dim small">Unlink kalau pekerja AI-nya jelek: hapus server ini dari config client itu, lalu ganti peran di roles.json. Claude Desktop: tambah entry yang sama ke <code>claude_desktop_config.json</code>. Gemini CLI: ke <code>.gemini/settings.json</code>. ML.ai: tambah remote server di setting MCP-nya.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Studio Kartun Parodi — TikTok • Facebook • YouTube • Format vertikal 9:16, 30–90 detik</span>
+    <span class="dim">Dibangun pakai Three.js 0.187 + anime.js 4.5 (lokal) • Gaya kantor 3D: Think Tank (Moongate)</span>
+  </footer>
+</div>
+
+<!-- Modal detail -->
+<div id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <button class="modal-x" data-close type="button">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div id="toast" hidden></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
