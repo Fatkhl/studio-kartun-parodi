@@ -3,8 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Studio Kartun Parodi — Kantor 3D</title>
-<meta name="description" content="Kantor Studio Kartun Parodi: 5 karyawan AI bikin film kartun pendek bahasa Indonesia, parodi hal viral.">
+<title>Studio Kartun Parodi — Kantor Virtual 3D</title>
+<meta name="description" content="Kantor virtual Studio Kartun Parodi: tim karyawan AI membuat film kartun pendek berbahasa Indonesia yang memparodikan hal viral.">
+<meta name="theme-color" content="#0b0d16">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M22 6l10 10 10-10' fill='none' stroke='%23ffc857' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='4' y='16' width='56' height='42' rx='12' fill='%23ffc857'/%3E%3Crect x='12' y='24' width='40' height='26' rx='6' fill='%230b0d16'/%3E%3Ccircle cx='25' cy='36' r='3.5' fill='%23ffc857'/%3E%3Ccircle cx='39' cy='36' r='3.5' fill='%23ffc857'/%3E%3Cpath d='M26 43q6 4 12 0' fill='none' stroke='%23ffc857' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css">
 <script type="importmap">
 {
@@ -15,120 +17,243 @@
   }
 }
 </script>
+<script src="vendor/lottie_light.min.js" defer></script>
 </head>
 <body>
-<div id="app">
-  <header id="tape">
-    <div class="tape-left">
-      <span class="logo">STUDIO KARTUN PARODI</span>
-      <span class="tape-sub">Film kartun pendek bahasa Indonesia — parodi hal viral</span>
+<a class="skip" href="#papan">Lewati ke papan episode</a>
+
+<header class="nav" id="nav">
+  <div class="nav-in">
+    <a class="brand" href="#kantor" aria-label="Studio Kartun Parodi — ke kantor">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="3" y="9" width="34" height="24" rx="7" fill="#ffc857"/>
+        <path d="M14 4 L20 9 L26 4" fill="none" stroke="#ffc857" stroke-width="2.6" stroke-linecap="round"/>
+        <circle cx="14.5" cy="19" r="2.6" fill="#1b1d26"/><circle cx="25.5" cy="19" r="2.6" fill="#1b1d26"/>
+        <path d="M14 24.5 Q20 29.5 26 24.5" fill="none" stroke="#1b1d26" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-txt"><b>Studio Kartun Parodi</b><small>Kantor virtual • Tim AI tanpa batas</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Navigasi bagian">
+      <a href="#kantor">Kantor</a>
+      <a href="#papan">Papan</a>
+      <a href="#tim">Tim</a>
+      <a href="#operasional">Operasional</a>
+      <a href="#mcp">MCP</a>
+    </nav>
+    <div class="nav-status">
+      <span class="chip live"><span class="live-dot" id="live-dot" aria-hidden="true"></span>Muse aktif</span>
+      <span class="chip" id="nav-count">0 episode</span>
     </div>
-    <div class="tape-right">
-      <span class="pill"><i class="dot green"></i> Muse aktif</span>
-      <span class="pill" id="tape-count">0 episode di papan</span>
-      <span class="pill amber">Target: 1 video/hari</span>
+  </div>
+</header>
+
+<main>
+  <!-- ================= KANTOR 3D ================= -->
+  <section class="hero" id="kantor" aria-label="Kantor 3D">
+    <div class="stage" id="stage">
+      <canvas id="office" aria-label="Kantor 3D Studio Kartun Parodi. Seret untuk memutar, klik meja untuk detail karyawan."></canvas>
+      <div class="labels" id="labels"></div>
+      <div class="stage-loading" id="stage-loading"><span class="spinner" aria-hidden="true"></span>Menyalakan lampu kantor…</div>
+      <div class="stage-controls">
+        <button type="button" class="btn-glass" id="btn-reset" title="Kembali ke tampilan awal">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Reset tampilan
+        </button>
+      </div>
+      <p class="stage-hint" id="stage-hint">Seret untuk memutar • Scroll/cubit untuk zoom • Klik meja atau karakter</p>
     </div>
-  </header>
 
-  <main>
-    <!-- ============ KANTOR 3D ============ -->
-    <section id="stage-wrap">
-      <div id="stage">
-        <canvas id="c"></canvas>
-        <div id="hud">
-          <div class="hud-big"><span id="h-ep">0</span><small>EPISODE</small></div>
-          <div class="hud-row"><span id="h-today">Hari ini: Trend Scan 06:30</span></div>
-          <div class="hud-row dim" id="h-place">KANTOR — 5 MEJA • PAPAN DI DINDING</div>
-          <div class="hud-bar"><i id="h-barfill"></i></div>
+    <div class="hero-card" id="hero-card">
+      <span class="eyebrow"><span class="dot-pulse" aria-hidden="true"></span>Live dari kantor • <span id="clock">--:--</span> WIB</span>
+      <h1>Tim AI tanpa batas,<br><em>satu studio kartun.</em></h1>
+      <p class="lead">Film kartun pendek bahasa Indonesia yang memparodikan hal viral — dari tren pagi sampai tayang sore.</p>
+      <div class="now">
+        <span class="now-k">Sekarang</span>
+        <span class="now-v" id="now-stage">—</span>
+      </div>
+      <dl class="stats">
+        <div><dt>Episode</dt><dd id="st-total">0</dd></div>
+        <div><dt>Dalam proses</dt><dd id="st-wip">0</dd></div>
+        <div><dt>Terbit</dt><dd id="st-done">0</dd></div>
+      </dl>
+      <div class="flow" id="flow" aria-label="Sebaran episode per tahap"></div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#papan">+ Tempel ide baru</a>
+        <a class="btn btn-ghost" href="#tim">Kenalan dengan tim</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PAPAN EPISODE ================= -->
+  <section class="section" id="papan" aria-labelledby="papan-h">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Big Board</span>
+        <h2 id="papan-h">Papan Episode</h2>
+      </div>
+      <p>Setiap ide bergerak lewat 5 tahap. Pindahkan dengan tombol atau seret kartu ke kolom lain. Semua tersimpan di browser ini (localStorage) dan ikut tampil di papan 3D.</p>
+    </div>
+
+    <form class="idea-form card" id="idea-form" autocomplete="off">
+      <div class="field">
+        <label for="f-topic">Topik parodi <span class="req">*</span></label>
+        <input id="f-topic" name="topic" type="text" placeholder="Contoh: Dasco &amp; Golden Oasis" maxlength="80" required>
+      </div>
+      <div class="field">
+        <label for="f-source">Sumber tren <span class="req">*</span></label>
+        <input id="f-source" name="source" type="text" placeholder="Contoh: X trending / TikTok FYP" maxlength="80" required>
+      </div>
+      <div class="field">
+        <label for="f-angle">Angle parodi</label>
+        <input id="f-angle" name="angle" type="text" placeholder="Contoh: sidang berubah jadi kuis" maxlength="120">
+      </div>
+      <div class="field">
+        <label for="f-why">Kenapa layak dibuat</label>
+        <input id="f-why" name="why" type="text" placeholder="Bukti viral: views, share, komentar" maxlength="140">
+      </div>
+      <button class="btn btn-primary" type="submit" id="f-submit">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+        Tempel ide
+      </button>
+    </form>
+
+    <div class="board" id="board">
+      <div class="col" data-stage="ide"><header><i></i><h3>Ide</h3><span class="count" data-count="ide">0</span></header><div class="col-body" data-col="ide"></div></div>
+      <div class="col" data-stage="naskah"><header><i></i><h3>Naskah</h3><span class="count" data-count="naskah">0</span></header><div class="col-body" data-col="naskah"></div></div>
+      <div class="col" data-stage="suara"><header><i></i><h3>Suara</h3><span class="count" data-count="suara">0</span></header><div class="col-body" data-col="suara"></div></div>
+      <div class="col" data-stage="edit"><header><i></i><h3>Edit</h3><span class="count" data-count="edit">0</span></header><div class="col-body" data-col="edit"></div></div>
+      <div class="col" data-stage="terbit"><header><i></i><h3>Terbit</h3><span class="count" data-count="terbit">0</span></header><div class="col-body" data-col="terbit"></div></div>
+    </div>
+    <p class="board-hint">Di HP: geser papan ke samping untuk melihat semua kolom.</p>
+  </section>
+
+  <!-- ================= TIM ================= -->
+  <section class="section" id="tim" aria-labelledby="tim-h">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Karyawan</span>
+        <h2 id="tim-h">Tim AI <span class="team-count" id="team-count" aria-live="polite"></span></h2>
+      </div>
+      <p>Tiap karyawan memegang satu tahap dan punya partner LLM sendiri — tambah karyawan baru sebanyak yang kamu mau, satu tahap bisa dipegang beberapa orang. Klik kartu — atau mejanya di kantor 3D — untuk melihat tugas, output, tools, dan antrean.</p>
+    </div>
+
+    <form class="emp-form card" id="emp-form" autocomplete="off" aria-label="Tambah karyawan">
+      <div class="field">
+        <label for="e-name">Nama <span class="req">*</span></label>
+        <input id="e-name" name="name" type="text" placeholder="Contoh: Bima" maxlength="40" required>
+      </div>
+      <div class="field">
+        <label for="e-role">Peran / jabatan <span class="req">*</span></label>
+        <input id="e-role" name="role" type="text" placeholder="Contoh: Meme Scout" maxlength="40" required>
+      </div>
+      <div class="field">
+        <label for="e-llm">LLM / model <span class="req">*</span></label>
+        <input id="e-llm" name="llm" type="text" placeholder="Contoh: Grok / Claude / Gemini" maxlength="60" required>
+      </div>
+      <div class="field">
+        <label for="e-stage">Tahap <span class="req">*</span></label>
+        <select id="e-stage" name="stage" required>
+          <option value="ide">Ide</option>
+          <option value="naskah">Naskah</option>
+          <option value="suara">Suara</option>
+          <option value="edit">Edit</option>
+          <option value="terbit">Terbit</option>
+        </select>
+      </div>
+      <div class="field field-wide">
+        <label for="e-job">Tugas singkat <span class="req">*</span></label>
+        <input id="e-job" name="job" type="text" placeholder="Contoh: cari meme + punchline dari X trending" maxlength="240" required>
+      </div>
+      <button class="btn btn-primary" type="submit" id="e-submit">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+        Tambah karyawan
+      </button>
+    </form>
+
+    <div class="team" id="team"></div>
+  </section>
+
+  <!-- ================= OPERASIONAL ================= -->
+  <section class="section" id="operasional" aria-labelledby="ops-h">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Operasional</span>
+        <h2 id="ops-h">Pipeline Harian</h2>
+      </div>
+      <p>Siklus 1 hari = 1 video. Kalau kualitas sudah stabil, naik ke 2 video per hari.</p>
+    </div>
+    <div class="ops">
+      <div class="card pipeline-card">
+        <ol class="pipeline" id="pipeline"></ol>
+      </div>
+      <div class="ops-side">
+        <div class="card">
+          <h3 class="card-h">Aturan Studio</h3>
+          <ol class="rules" id="rules"></ol>
         </div>
-        <div id="labels"></div>
-        <div id="stage-hint">Seret untuk melihat sekeliling &nbsp;•&nbsp; Klik meja / karakter untuk fokus &amp; buka detail</div>
-        <button id="btn-reset-view" type="button">⟲ Reset tampilan</button>
-      </div>
-      <div class="stage-caption">
-        <span><b>Langit senja permanen</b> di atas kantor — kayak game Think Tank: satu ruangan, lima meja, papan besar di dinding, dan lampu kuningan yang hangat.</span>
-        <span class="dim">Three.js + anime.js • semua library lokal, tanpa CDN</span>
-      </div>
-    </section>
-
-    <!-- ============ PAPAN EPISODE ============ -->
-    <section id="board-sec" class="panel">
-      <div class="sec-head">
-        <h2>📌 Papan Episode</h2>
-        <span class="dim">Klik sticky note untuk detail • pindah tahap pakai tombol ‹ › atau seret ke kolom lain • data tersimpan di browser (localStorage)</span>
-      </div>
-      <form id="idea-form" autocomplete="off">
-        <input id="f-topic" type="text" placeholder="Topik parodi — contoh: Dasco &amp; Golden Oasis" maxlength="80" required>
-        <input id="f-source" type="text" placeholder="Sumber tren — contoh: X trending / TikTok FYP" maxlength="80" required>
-        <input id="f-angle" type="text" placeholder="Angle parodi — contoh: sidang berubah jadi kuis" maxlength="120">
-        <input id="f-why" type="text" placeholder="Kenapa layak dibuat — bukti viralnya" maxlength="140">
-        <button type="submit">+ Tempel ide baru</button>
-      </form>
-      <div id="board">
-        <div class="col" data-stage="ide"><h3>💡 IDE <span class="count" data-count="ide">0</span></h3><div class="col-body" data-col="ide"></div></div>
-        <div class="col" data-stage="naskah"><h3>✍️ NASKAH <span class="count" data-count="naskah">0</span></h3><div class="col-body" data-col="naskah"></div></div>
-        <div class="col" data-stage="suara"><h3>🎙️ SUARA <span class="count" data-count="suara">0</span></h3><div class="col-body" data-col="suara"></div></div>
-        <div class="col" data-stage="edit"><h3>🎬 EDIT <span class="count" data-count="edit">0</span></h3><div class="col-body" data-col="edit"></div></div>
-        <div class="col" data-stage="terbit"><h3>🚀 TERBIT <span class="count" data-count="terbit">0</span></h3><div class="col-body" data-col="terbit"></div></div>
-      </div>
-    </section>
-
-    <!-- ============ KARYAWAN ============ -->
-    <section id="team-sec" class="panel">
-      <div class="sec-head">
-        <h2>👥 5 Karyawan AI</h2>
-        <span class="dim">Klik kartu atau mejanya di kantor 3D untuk lihat job, output, dan antrean tahapnya</span>
-      </div>
-      <div id="team"></div>
-    </section>
-
-    <!-- ============ PIPELINE + ATURAN ============ -->
-    <section id="pipe-sec" class="panel">
-      <div class="sec-head"><h2>🗓️ Pipeline Harian</h2><span class="dim">Siklus 1 hari = 1 video • kalau stabil, naik ke 2 video/hari</span></div>
-      <ol id="pipeline"></ol>
-      <h3 class="sub-h">📏 Aturan Studio</h3>
-      <ul id="rules"></ul>
-      <h3 class="sub-h">🤖 Partner LLM</h3>
-      <div id="partners"></div>
-    </section>
-
-    <!-- ============ MCP ============ -->
-    <section id="mcp-sec" class="panel">
-      <div class="sec-head"><h2>🔌 MCP — Tinggal Colok</h2><span class="dim">Server MCP studio jalan di VM • 7 tools • colok ke Claude, Gemini, atau ML.ai</span></div>
-      <div class="mcp-grid">
-        <div>
-          <h3 class="sub-h">Config (mcp-config.json)</h3>
-          <pre id="mcp-json" class="code"></pre>
-          <button class="copy-btn" data-copy="mcp-json" type="button">📋 Salin config</button>
-        </div>
-        <div>
-          <h3 class="sub-h">Perintah Claude Code</h3>
-          <pre id="mcp-cmd" class="code"></pre>
-          <button class="copy-btn" data-copy="mcp-cmd" type="button">📋 Salin perintah</button>
-          <h3 class="sub-h">7 Tools</h3>
-          <ul id="mcp-tools" class="tools"></ul>
-          <p class="dim small">Unlink kalau pekerja AI-nya jelek: hapus server ini dari config client itu, lalu ganti peran di roles.json. Claude Desktop: tambah entry yang sama ke <code>claude_desktop_config.json</code>. Gemini CLI: ke <code>.gemini/settings.json</code>. ML.ai: tambah remote server di setting MCP-nya.</p>
+        <div class="card">
+          <h3 class="card-h">Status Partner LLM</h3>
+          <ul class="partners" id="partners"></ul>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <footer>
-    <span>Studio Kartun Parodi — TikTok • Facebook • YouTube • Format vertikal 9:16, 30–90 detik</span>
-    <span class="dim">Dibangun pakai Three.js 0.187 + anime.js 4.5 (lokal) • Gaya kantor 3D: Think Tank (Moongate)</span>
-  </footer>
-</div>
+  <!-- ================= MCP ================= -->
+  <section class="section" id="mcp" aria-labelledby="mcp-h">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Integrasi</span>
+        <h2 id="mcp-h">MCP — Tinggal Colok</h2>
+      </div>
+      <p>Server MCP studio berjalan di VM dengan 7 tools. Colokkan ke Claude, Gemini, atau ML.ai.</p>
+    </div>
+    <div class="mcp">
+      <div class="card mcp-main">
+        <h3 class="card-h">Perintah Claude Code</h3>
+        <div class="code-wrap">
+          <pre class="code" id="mcp-cmd"></pre>
+          <button type="button" class="btn btn-copy" data-copy="mcp-cmd" data-label="Perintah">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Salin</span>
+          </button>
+        </div>
+        <h3 class="card-h">Config (mcp-config.json)</h3>
+        <div class="code-wrap">
+          <pre class="code" id="mcp-json"></pre>
+          <button type="button" class="btn btn-copy" data-copy="mcp-json" data-label="Config">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Salin</span>
+          </button>
+        </div>
+        <p class="note-text">Unlink kalau pekerja AI-nya jelek: hapus server ini dari config client itu, lalu ganti peran di <code>roles.json</code>. Claude Desktop: tambah entry yang sama ke <code>claude_desktop_config.json</code>. Gemini CLI: ke <code>.gemini/settings.json</code>. ML.ai: tambah remote server di setting MCP-nya.</p>
+      </div>
+      <div class="card">
+        <h3 class="card-h">7 Tools</h3>
+        <ul class="tools" id="mcp-tools"></ul>
+      </div>
+    </div>
+  </section>
+</main>
 
-<!-- Modal detail -->
-<div id="modal" hidden>
+<footer class="footer">
+  <div class="footer-in">
+    <span><b>Studio Kartun Parodi</b> — TikTok • Facebook • YouTube • Format vertikal 9:16, 30–90 detik</span>
+    <span class="muted">Three.js 0.187 • anime.js 4.5 • lottie-web 5.13 — semua library lokal, tanpa CDN</span>
+  </div>
+</footer>
+
+<div class="modal" id="modal" hidden>
   <div class="modal-backdrop" data-close></div>
-  <div class="modal-card" role="dialog" aria-modal="true">
-    <button class="modal-x" data-close type="button">✕</button>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+    <button class="modal-x" type="button" data-close aria-label="Tutup">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
     <div id="modal-body"></div>
   </div>
 </div>
 
-<div id="toast" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden><span class="toast-ic" id="toast-ic" aria-hidden="true"></span><span id="toast-msg"></span></div>
 
 <script type="module" src="js/main.js"></script>
 </body>
