@@ -834,123 +834,42 @@ function pendant(parent, x, z, color = '#ffd29a', cordLen = 1.55, intensity = 15
 }
 
 // ---------------------------------------------------------------- karakter
+// Karakter Muse asli (gambar plush duduk di kursi gaming) sebagai sprite billboard.
+// Tekstur dimuat per warna dan di-cache; rig dummy menjaga animateCharacters tetap jalan.
+const seatTexCache = new Map();
+function seatTexture(src) {
+  if (!seatTexCache.has(src)) {
+    const tex = new THREE.TextureLoader().load(src);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    seatTexCache.set(src, tex);
+  }
+  return seatTexCache.get(src);
+}
+const SEAT_ASPECT = 0.411; // crop duduk 384x935
 function buildCharacter(desk, parent) {
-  const c = desk.color3;
-  const skin = std(desk.skin, 0.62);
-  const hairM = std(desk.hair, 0.75);
-  const shirt = std(c.clone().multiplyScalar(0.85), 0.88);
-  const shirtDark = std(c.clone().multiplyScalar(0.55), 0.9);
   const char = new THREE.Group(); parent.add(char);
-  const rig = {};
-
-  // kursi kantor
-  const chair = new THREE.Group(); chair.position.set(0, 0, -0.12); char.add(chair);
-  const fabric = std('#2a2f3a', 0.9), metal = std('#9aa0a8', 0.3, 0.9), black = std('#111', 0.5);
-  add(box(0.58, 0.09, 0.54), fabric, chair, 0, 0.5, 0);
-  add(box(0.54, 0.66, 0.08), fabric, chair, 0, 0.92, -0.3).rotation.x = -0.08;
-  add(cyl(0.025, 0.025, 0.4, 10), metal, chair, 0, 0.27, 0);
-  for (let i = 0; i < 5; i++) {
-    const a = (i / 5) * Math.PI * 2;
-    add(box(0.04, 0.03, 0.32), metal, chair, Math.sin(a) * 0.15, 0.06, Math.cos(a) * 0.15).rotation.y = a;
-    add(sph(0.03, 8, 6), black, chair, Math.sin(a) * 0.3, 0.03, Math.cos(a) * 0.3);
-  }
-  [-1, 1].forEach((s) => { add(box(0.05, 0.05, 0.36), fabric, chair, s * 0.3, 0.7, 0.02); add(box(0.03, 0.2, 0.03), metal, chair, s * 0.3, 0.6, -0.08); });
-
-  // tubuh
-  const body = new THREE.Group(); body.position.set(0, 0.55, -0.05); char.add(body); rig.body = body;
-  const pants = std('#2b3242', 0.85);
-  [-1, 1].forEach((s) => add(new THREE.CapsuleGeometry(0.085, 0.3, 6, 12), pants, body, s * 0.11, 0.02, 0.17).rotation.x = Math.PI / 2);
-  const torso = add(new THREE.CapsuleGeometry(0.2, 0.32, 8, 20), shirt, body, 0, 0.34, 0);
-  torso.scale.set(1.08, 1, 0.78); rig.torso = torso;
-  add(new THREE.TorusGeometry(0.085, 0.025, 8, 20), std('#f4efe6', 0.8), body, 0, 0.6, 0.0).rotation.x = Math.PI / 2;
-  add(box(0.07, 0.09, 0.012), std('#f4efe6', 0.6), body, 0.1, 0.42, 0.165).rotation.x = -0.12;
-  add(box(0.07, 0.022, 0.014), std(c, 0.6), body, 0.1, 0.455, 0.168).rotation.x = -0.12;
-  // lengan: bahu -> siku -> tangan
-  rig.arms = [-1, 1].map((s) => {
-    const sh = new THREE.Group(); sh.position.set(s * 0.25, 0.53, 0.0); body.add(sh);
-    add(sph(0.08, 14, 10), shirt, sh, 0, 0, 0);
-    add(new THREE.CapsuleGeometry(0.06, 0.2, 6, 10), shirt, sh, 0, -0.13, 0);
-    const elbow = new THREE.Group(); elbow.position.y = -0.27; sh.add(elbow);
-    add(new THREE.CapsuleGeometry(0.052, 0.2, 6, 10), shirtDark, elbow, 0, -0.12, 0);
-    add(sph(0.055, 12, 10), skin, elbow, 0, -0.27, 0.0).scale.set(1, 0.8, 1.15);
-    sh.rotation.set(-0.42, 0, s * -0.1);
-    elbow.rotation.x = -1.2;
-    return { sh, elbow, s };
-  });
-  // leher + kepala
-  add(cyl(0.06, 0.07, 0.12, 12), skin, body, 0, 0.64, 0);
-  const head = new THREE.Group(); head.position.set(0, 0.86, 0.01); body.add(head); rig.head = head;
-  add(sph(0.215, 32, 24), skin, head, 0, 0, 0).scale.set(1, 1.04, 0.96);
-  [-1, 1].forEach((s) => add(sph(0.045, 10, 8), skin, head, s * 0.208, -0.01, 0).scale.set(0.6, 1, 1));
-  const white = std('#ffffff', 0.3), ink = std('#16121a', 0.3);
-  rig.eyes = [-1, 1].map((s) => {
-    const eg = new THREE.Group(); eg.position.set(s * 0.075, 0.02, 0.178); head.add(eg);
-    add(sph(0.042, 16, 12), white, eg, 0, 0, 0, { cast: false }).scale.set(1, 1.1, 0.55);
-    add(sph(0.026, 12, 10), ink, eg, 0, -0.004, 0.018, { cast: false }).scale.set(1, 1.1, 0.6);
-    add(sph(0.008, 8, 6), white, eg, 0.008, 0.01, 0.033, { cast: false });
-    return eg;
-  });
-  [-1, 1].forEach((s) => { add(box(0.07, 0.016, 0.02), hairM, head, s * 0.078, 0.085, 0.19, { cast: false }).rotation.z = s * -0.12; });
-  add(sph(0.026, 10, 8), std(new THREE.Color(desk.skin).multiplyScalar(0.9), 0.6), head, 0, -0.03, 0.208, { cast: false });
-  const smile = add(new THREE.TorusGeometry(0.052, 0.011, 8, 20, Math.PI), std('#5a2324', 0.5), head, 0, -0.07, 0.19, { cast: false });
-  smile.rotation.z = Math.PI; smile.rotation.x = -0.25;
-  const blush = new THREE.MeshStandardMaterial({ color: '#ff8a8a', roughness: 0.8, transparent: true, opacity: 0.4 });
-  [-1, 1].forEach((s) => add(sph(0.032, 10, 8), blush, head, s * 0.125, -0.05, 0.16, { cast: false }).scale.set(1, 0.6, 0.4));
-
-  // rambut
-  const capGeo = (r, th) => new THREE.SphereGeometry(r, 32, 16, 0, Math.PI * 2, 0, th);
-  add(capGeo(0.226, Math.PI * 0.5), hairM, head, 0, 0.01, -0.012).rotation.x = -0.32;
-  add(sph(0.215, 24, 16), hairM, head, 0, -0.01, -0.06).scale.set(1.03, 1.0, 0.85);
-  if (desk.hairStyle === 'messy') {
-    for (let i = 0; i < 7; i++) add(sph(0.06, 10, 8), hairM, head, R(-0.13, 0.13), 0.19 + R(-0.02, 0.03), R(-0.08, 0.1)).scale.set(1, 0.7, 1);
-    const pencil = add(cyl(0.01, 0.01, 0.2, 8), std('#ffc857', 0.6), head, 0.215, 0.06, 0.03);
-    pencil.rotation.set(0.1, 0, 1.25);
-    add(cyl(0.011, 0.011, 0.025, 8), std('#ff8fa3', 0.6), pencil, 0, 0.1, 0);
-  }
-  if (desk.hairStyle === 'bun') {
-    add(sph(0.095, 16, 12), hairM, head, 0, 0.17, -0.14);
-    add(new THREE.TorusGeometry(0.06, 0.014, 8, 16), std(c, 0.6), head, 0, 0.13, -0.11).rotation.x = 1.0;
-  }
-  if (desk.hairStyle === 'side') {
-    const fr = add(sph(0.1, 14, 10), hairM, head, 0.08, 0.15, 0.1); fr.scale.set(1.4, 0.5, 0.9); fr.rotation.z = -0.3;
-  }
-  // atribut khas peran
-  if (desk.hat === 'cap') {
-    add(capGeo(0.232, Math.PI * 0.42), std(c, 0.7), head, 0, 0.03, 0).rotation.x = 0.15;
-    const brim = add(cyl(0.16, 0.16, 0.018, 24), std(c.clone().multiplyScalar(0.7), 0.7), head, 0, 0.075, -0.24);
-    brim.scale.set(1, 1, 0.75); brim.rotation.x = -0.12;
-    add(sph(0.025, 8, 6), std('#f4efe6', 0.6), head, 0, 0.255, 0.0);
-  } else if (desk.hat === 'glasses') {
-    const frame = std('#1b1d26', 0.35, 0.4);
-    [-1, 1].forEach((s) => add(new THREE.TorusGeometry(0.052, 0.009, 8, 24), frame, head, s * 0.076, 0.02, 0.208, { cast: false }));
-    add(box(0.05, 0.01, 0.01), frame, head, 0, 0.03, 0.21, { cast: false });
-    [-1, 1].forEach((s) => { add(box(0.008, 0.008, 0.2), frame, head, s * 0.13, 0.025, 0.11, { cast: false }).rotation.y = s * 0.25; });
-    const lens = new THREE.MeshStandardMaterial({ color: '#cfe4ff', roughness: 0.05, transparent: true, opacity: 0.18 });
-    [-1, 1].forEach((s) => add(new THREE.CircleGeometry(0.048, 20), lens, head, s * 0.076, 0.02, 0.212, { cast: false }));
-  } else if (desk.hat === 'headphones') {
-    const hp = std('#1e2129', 0.4, 0.4);
-    add(new THREE.TorusGeometry(0.245, 0.02, 10, 32, Math.PI), hp, head, 0, 0.0, -0.01).scale.set(1, 1.05, 1);
-    [-1, 1].forEach((s) => {
-      add(cyl(0.075, 0.075, 0.06, 20), hp, head, s * 0.235, -0.01, 0).rotation.z = Math.PI / 2;
-      add(cyl(0.06, 0.06, 0.02, 20), std(c, 0.8), head, s * 0.2, -0.01, 0).rotation.z = Math.PI / 2;
-    });
-  } else if (desk.hat === 'beanie') {
-    add(capGeo(0.236, Math.PI * 0.5), std(c.clone().multiplyScalar(0.8), 0.95), head, 0, 0.02, -0.01).rotation.x = -0.15;
-    add(new THREE.TorusGeometry(0.222, 0.035, 10, 32), std(c.clone().multiplyScalar(0.65), 0.95), head, 0, 0.04, -0.03).rotation.x = Math.PI / 2 - 0.15;
-    add(sph(0.06, 12, 10), std('#f4efe6', 1), head, 0, 0.26, -0.05);
-  } else if (desk.hat === 'fedora') {
-    const fm = std('#2b2622', 0.7);
-    add(cyl(0.34, 0.34, 0.018, 32), fm, head, 0, 0.14, 0);
-    add(cyl(0.17, 0.2, 0.16, 28), fm, head, 0, 0.23, 0);
-    add(cyl(0.202, 0.202, 0.04, 28), std(c, 0.7), head, 0, 0.17, 0);
-  }
-
-  rig.phase = rand() * 10;
-  rig.nextLook = 2 + rand() * 4; rig.lookT = 0; rig.lookDir = 0;
-  rig.nextBlink = 1 + rand() * 3;
+  const seatSrc = (desk.photo || 'assets/chars/muse-hijau.png').replace('muse-', 'muse-seat-');
+  const H = 1.85, W = H * SEAT_ASPECT;
+  const body = new THREE.Group(); body.position.set(0, 0.55, -0.05); char.add(body);
+  const torso = new THREE.Group(); torso.position.set(0, 0.375, 0.05); body.add(torso);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: seatTexture(seatSrc), transparent: true, depthWrite: false }));
+  sprite.scale.set(W, H, 1);
+  torso.add(sprite);
+  // bidang transparan supaya karakter tetap bisa diklik (pilih meja)
+  const hit = new THREE.Mesh(new THREE.PlaneGeometry(W, H), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }));
+  torso.add(hit);
+  const head = new THREE.Group(); torso.add(head);
+  const mkArm = () => { const sh = new THREE.Group(); const elbow = new THREE.Group(); sh.add(elbow); return { sh, elbow }; };
+  const rig = {
+    body, torso, head,
+    arms: [mkArm(), mkArm()],
+    eyes: [new THREE.Group(), new THREE.Group()],
+    phase: rand() * 10,
+    nextLook: 2 + rand() * 4, lookT: 0, lookDir: 0,
+    nextBlink: 1 + rand() * 3,
+  };
   return { char, rig };
 }
-
 // ---------------------------------------------------------------- meja kerja
 function buildDesk(desk, i, spot) {
   const { x, z, s } = spot;
@@ -1023,7 +942,7 @@ function buildDesk(desk, i, spot) {
   label.style.setProperty('--c', desk.css);
   label.dataset.desk = desk.id;
   label.setAttribute('aria-label', `Buka detail ${desk.name}`);
-  label.innerHTML = `<i aria-hidden="true">${escHtml(desk.avatar)}</i><span><b>${escHtml(desk.name)}</b><em data-q>standby</em></span>`;
+  label.innerHTML = `<i aria-hidden="true">${desk.photo ? `<img src="${escHtml(desk.photo)}" alt="">` : escHtml(desk.avatar)}</i><span><b>${escHtml(desk.name)}</b><em data-q>standby</em></span>`;
   label.addEventListener('click', (e) => { e.stopPropagation(); selectDesk(desk.id); });
   label.addEventListener('pointerenter', () => setHover(desk.id));
   label.addEventListener('pointerleave', () => setHover(null));

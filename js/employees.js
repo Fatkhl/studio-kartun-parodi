@@ -15,35 +15,35 @@ export const SEED_EMPLOYEES = [
     outputs: ['ideas/<tanggal>-<topik>.json — 3 ide dengan sumber tren, angle parodi, dan kenapa layak dibuat'],
     tools: ['Gemini video understanding', 'Grok X trends', 'Browser (TikTok Creative Center)'],
     voice: 'Riset dulu, opini belakangan. Setiap ide harus punya bukti viral (views, share, atau komentar).',
-    color: STAGE_COLORS.ide, avatar: '🔎', skin: '#e9b48f', hair: '#1f140e', hairStyle: 'short', hat: 'cap', prop: 'phone', screen: 'trends', mug: '#f4efe6' },
+    color: STAGE_COLORS.ide, avatar: '🔎', photo: 'assets/chars/muse-oranye.png', hoodie: '#f97316', skin: '#e9b48f', hair: '#1f140e', hairStyle: 'short', hat: 'cap', prop: 'phone', screen: 'trends', mug: '#f4efe6' },
   { id: 'scriptwriter', name: 'Scriptwriter', llm: 'Claude', stage: 'naskah',
     job: 'Tulis naskah parodi: hook 3 detik pertama, dialog karakter, punchline, dan caption. Bahasa Indonesia, gaya kartun, satir tajam tapi lucu. Satu naskah per episode, 30–90 detik.',
     inputs: ['ideas/<tanggal>-<topik>.json dari Trend Hunter'],
     outputs: ['scripts/<tanggal>-<topik>.json — hook, naskah dialog per karakter, arahan visual, caption + judul'],
     tools: ['Claude Code / Claude API'],
     voice: 'Dialog hidup, karakter beda-beda suaranya, punchline di akhir. Jangan ceramah, jangan kaku.',
-    color: STAGE_COLORS.naskah, avatar: '✍️', skin: '#f3d0b0', hair: '#7a4526', hairStyle: 'messy', hat: 'glasses', prop: 'papers', screen: 'code', mug: '#2f3a56' },
+    color: STAGE_COLORS.naskah, avatar: '✍️', photo: 'assets/chars/muse-biru.png', hoodie: '#3b82f6', skin: '#f3d0b0', hair: '#7a4526', hairStyle: 'messy', hat: 'glasses', prop: 'papers', screen: 'code', mug: '#2f3a56' },
   { id: 'voiceover', name: 'Voiceover', llm: 'Muse + TTS', stage: 'suara',
     job: 'Rekam narasi + dialog karakter pakai suara AI. Tiap karakter beda suara/intonasi. Bahasa Indonesia natural, bukan robotik.',
     inputs: ['scripts/<tanggal>-<topik>.json dari Scriptwriter'],
     outputs: ['audio/<tanggal>-<topik>/ — file audio per karakter + narasi'],
     tools: ['Library voice (sudah ada)', 'TTS / spoken-audio'],
     voice: 'Natural, ekspresif, intonasi sesuai karakter. Kalau satu suara dipakai buat semua karakter, gagal.',
-    color: STAGE_COLORS.suara, avatar: '🎙️', skin: '#c98d67', hair: '#24160f', hairStyle: 'bun', hat: 'headphones', prop: 'mic', screen: 'wave', mug: '#ffd6e2' },
+    color: STAGE_COLORS.suara, avatar: '🎙️', photo: 'assets/chars/muse-merah.png', hoodie: '#ef4444', skin: '#c98d67', hair: '#24160f', hairStyle: 'bun', hat: 'headphones', prop: 'mic', screen: 'wave', mug: '#ffd6e2' },
   { id: 'editor', name: 'Editor', llm: 'Muse', stage: 'edit',
     job: 'Rakit video kartun vertikal 9:16 dari naskah + audio: karakter, gerakan, subtitle, efek, musik, pacing. Render final 1080x1920.',
     inputs: ['scripts/<tanggal>-<topik>.json', 'audio/<tanggal>-<topik>/'],
     outputs: ['video/<tanggal>-<topik>/ — project Remotion + render final .mp4'],
     tools: ['toon-shorts-pack (Remotion + Three.js)', 'Blender (3D bila perlu)', 'creative-libs (anime.js, pixijs, motion-canvas, lottie, tone.js)', 'ffmpeg'],
     voice: 'Pacing cepat, subtitle selalu ada, visual hidup. Video yang bikin orang nonton sampai habis.',
-    color: STAGE_COLORS.edit, avatar: '🎬', skin: '#8d5a3c', hair: '#0f0b0a', hairStyle: 'short', hat: 'beanie', prop: 'clapper', screen: 'timeline', mug: '#1d1d24' },
+    color: STAGE_COLORS.edit, avatar: '🎬', photo: 'assets/chars/muse-ungu.png', hoodie: '#8b5cf6', skin: '#8d5a3c', hair: '#0f0b0a', hairStyle: 'short', hat: 'beanie', prop: 'clapper', screen: 'timeline', mug: '#1d1d24' },
   { id: 'publisher-analyst', name: 'Publisher + Analis', llm: 'Muse + Gemini', stage: 'terbit',
     job: 'Posting ke TikTok + FB + YouTube dengan judul/caption/hashtag yang pas per platform, catat link + waktu posting. Malamnya baca analitik: mana yang viral, kenapa, jam berapa paling rame — terus kasih feedback ke Trend Hunter buat besok.',
     inputs: ['video/<tanggal>-<topik>/ final .mp4', 'scripts/<tanggal>-<topik>.json (judul + caption)'],
     outputs: ['published/<tanggal>-<topik>.json — link posting per platform + waktu', 'analytics/<tanggal>.json — views, likes, share, komentar, dan kesimpulan apa yang jalan'],
     tools: ['social-auto-upload (17 platform)', 'YouTube Studio / TikTok analytics (baca manual via browser)'],
     voice: 'Posting tepat waktu, data jujur. Kalau video flop, bilang flop dan kenapa — jangan dibagus-bagusin.',
-    color: STAGE_COLORS.terbit, avatar: '🚀', skin: '#f0c19a', hair: '#3b2a1e', hairStyle: 'side', hat: 'fedora', prop: 'rocket', screen: 'chart', mug: '#e8f5ee' },
+    color: STAGE_COLORS.terbit, avatar: '🚀', photo: 'assets/chars/muse-hijau.png', hoodie: '#17171a', skin: '#f0c19a', hair: '#3b2a1e', hairStyle: 'side', hat: 'fedora', prop: 'rocket', screen: 'chart', mug: '#e8f5ee' },
 ];
 const CORE_IDS = new Set(SEED_EMPLOYEES.map((e) => e.id));
 const SEED_BY_ID = Object.fromEntries(SEED_EMPLOYEES.map((e) => [e.id, e]));
@@ -54,6 +54,8 @@ export const PALETTE = {
   color: Object.values(STAGE_COLORS),
   // 5 avatar inti + avatar tambahan bergaya sama, supaya karyawan baru tidak kembar ikon dengan karyawan inti
   avatar: ['💡', '🎨', '📣', '🧠', '🎧', '📊', '🧩', '📝', '🎥', '🛰️', ...col('avatar')],
+  photo: ['assets/chars/muse-hijau.png', 'assets/chars/muse-merah.png', 'assets/chars/muse-biru.png', 'assets/chars/muse-ungu.png', 'assets/chars/muse-oranye.png'],
+  hoodie: ['#17171a', '#ef4444', '#3b82f6', '#8b5cf6', '#f97316'],
   skin: col('skin'),
   hair: col('hair'),
   hairStyle: ['short', 'messy', 'bun', 'side'],
@@ -63,7 +65,7 @@ export const PALETTE = {
   mug: col('mug'),
 };
 // stride berbeda per atribut (semua koprima dengan panjang paletnya) → kombinasi tampilan bervariasi
-const ROT = { color: [2, 1], avatar: [1, 0], skin: [3, 1], hair: [2, 3], hairStyle: [1, 1], hat: [2, 1], prop: [3, 2], screen: [1, 3], mug: [2, 3] };
+const ROT = { color: [2, 1], avatar: [1, 0], photo: [1, 0], hoodie: [1, 0], skin: [3, 1], hair: [2, 3], hairStyle: [1, 1], hat: [2, 1], prop: [3, 2], screen: [1, 3], mug: [2, 3] };
 export function visualFor(seq) {
   const n = Math.max(0, seq - 1);
   const out = {};
@@ -102,6 +104,8 @@ function normalize(raw) {
   for (const k of ['avatar', 'skin', 'hair', 'hairStyle', 'hat', 'prop', 'screen', 'mug']) e[k] = str(raw[k], 24) || fallback[k];
   for (const k of ['skin', 'hair', 'mug']) if (!isHex(e[k])) e[k] = fallback[k];
   e.color = isHex(raw.color) ? raw.color : (core ? core.color : STAGE_COLORS[e.stage]);
+  e.photo = typeof raw.photo === 'string' && raw.photo.trim() ? str(raw.photo, 120) : (fallback.photo || 'assets/chars/muse-hijau.png');
+  e.hoodie = typeof raw.hoodie === 'string' && /^#[0-9a-f]{3,8}$/i.test(raw.hoodie) ? raw.hoodie : (fallback.hoodie || '#17171a');
   if (custom) { e.custom = true; e.seq = Number(raw.seq) || 1; }
   return e;
 }

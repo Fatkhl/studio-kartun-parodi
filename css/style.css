@@ -133,7 +133,8 @@ h2 { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 4vw, 
   transition: opacity 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .desk-label::after { content: ""; position: absolute; left: calc(50% + var(--ax, 0px)); bottom: -6px; width: 10px; height: 10px; background: inherit; border-right: 1px solid rgba(255, 255, 255, 0.12); border-bottom: 1px solid rgba(255, 255, 255, 0.12); transform: translateX(-50%) rotate(45deg); }
-.desk-label i { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 14px; background: color-mix(in srgb, var(--c) 28%, transparent); box-shadow: inset 0 0 0 1.5px var(--c); }
+.desk-label i { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 14px; background: color-mix(in srgb, var(--c) 28%, transparent); box-shadow: inset 0 0 0 1.5px var(--c); overflow: hidden; }
+.desk-label i img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .desk-label span { display: flex; flex-direction: column; line-height: 1.15; }
 .desk-label b { font-size: 12.5px; font-weight: 700; }
 .desk-label em { font-style: normal; font-size: 11px; color: var(--muted); }
@@ -265,7 +266,11 @@ h2 { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 4vw, 
 }
 .emp:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--c) 50%, transparent); box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--c) 45%, #000); }
 .emp-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.emp-av { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; font-size: 24px; background: color-mix(in srgb, var(--c) 20%, transparent); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c) 60%, transparent); }
+.emp-av { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; font-size: 24px; background: color-mix(in srgb, var(--c) 20%, transparent); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c) 60%, transparent); overflow: hidden; }
+.emp-av img, .m-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-cast { margin-top: 16px; }
+.hero-cast img { width: 100%; border-radius: 16px; display: block; }
+.hero-cast figcaption { margin-top: 8px; font-size: 13px; color: var(--text-2); }
 .emp-stage { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c); }
 .emp-name { font-family: var(--display); font-size: 20px; font-weight: 600; line-height: 1.2; word-break: break-word; }
 .emp-llm { align-self: flex-start; font-size: 12px; font-weight: 650; color: var(--text); padding: 3px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); }
@@ -348,7 +353,7 @@ h2 { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 4vw, 
 .modal-x svg { width: 18px; height: 18px; }
 .modal-x:hover { background: rgba(255, 255, 255, 0.1); color: var(--text); }
 .m-head { display: flex; gap: 16px; align-items: flex-start; padding-right: 44px; margin-bottom: 20px; }
-.m-av { flex: none; width: 60px; height: 60px; border-radius: 18px; display: grid; place-items: center; font-size: 30px; background: color-mix(in srgb, var(--c) 22%, transparent); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c) 60%, transparent); }
+.m-av { flex: none; width: 60px; height: 60px; border-radius: 18px; display: grid; place-items: center; font-size: 30px; background: color-mix(in srgb, var(--c) 22%, transparent); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c) 60%, transparent); overflow: hidden; }
 .m-eyebrow { font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--c); }
 .m-head h2 { font-size: clamp(24px, 3vw, 30px); margin-top: 2px; word-break: break-word; }
 .m-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }

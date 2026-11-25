@@ -286,7 +286,7 @@ function renderTeam() {
     return `<div class="emp-wrap${del ? ' custom' : ''}" data-wrap="${esc(emp.id)}">
       <button type="button" class="emp" data-emp="${esc(emp.id)}" style="--c:${esc(emp.color)}">
         <span class="emp-top">
-          <span class="emp-av" aria-hidden="true">${esc(emp.avatar)}</span>
+          <span class="emp-av" aria-hidden="true">${emp.photo ? `<img src="${esc(emp.photo)}" alt="">` : esc(emp.avatar)}</span>
           <span class="emp-stage">Tahap ${STAGE_LABEL[emp.stage]}</span>
         </span>
         <span class="emp-name">${esc(emp.name)}</span>
@@ -460,7 +460,7 @@ function openEmployee(id) {
   const io = [emp.inputs.length ? `<section class="m-sec"><h3>Input</h3>${list(emp.inputs)}</section>` : '', emp.outputs.length ? `<section class="m-sec"><h3>Output</h3>${list(emp.outputs)}</section>` : ''].join('');
   openModal(`
     <header class="m-head">
-      <span class="m-av" aria-hidden="true">${esc(emp.avatar)}</span>
+      <span class="m-av" aria-hidden="true">${emp.photo ? `<img src="${esc(emp.photo)}" alt="">` : esc(emp.avatar)}</span>
       <div>
         <span class="m-eyebrow">Karyawan${emp.role ? ' • ' + esc(emp.role) : ''} • Tahap ${STAGE_LABEL[emp.stage]}</span>
         <h2 id="modal-title">${esc(emp.name)}</h2>
